@@ -36,7 +36,7 @@ uicontrol('Parent',hChoicesPanel,'Unit','Normalized','Position',[0.0 0.8 0.5 0.2
 hAnalogChannel = uicontrol('Parent',hChoicesPanel,'Unit','Normalized','Position',[0.5 0.8 0.5 0.2],'Style','popup','String',analogChannelStringList,'FontSize',fontSizeMedium,'BackgroundColor',backgroundColor);
 
 % Reference scheme
-referenceChannelStringList = ['None|AvgRef|' analogChannelStringList]; 
+referenceChannelStringList = ['None|AvgRef|' analogChannelStringList];
 referenceChannelStringArray = [{'None'} {'AvgRef'} analogChannelStringArray];
 uicontrol('Parent',hChoicesPanel,'Unit','Normalized','Position',[0.0 0.6 0.5 0.2],'Style','text','String','Reference','FontSize',fontSizeMedium);
 hReferenceChannel = uicontrol('Parent',hChoicesPanel,'Unit','Normalized','Position',[0.5 0.6 0.5 0.2],'Style','popup','String',referenceChannelStringList,'FontSize',fontSizeMedium,'BackgroundColor',backgroundColor);
@@ -46,6 +46,12 @@ analysisTypeStringList = 'ERP|FFT|deltaFFT|TF|deltaTF';
 analysisTypeStringArray = [{'ERP'} {'FFT'} {'deltaFFT'} {'TF'} {'deltaTF'}];
 uicontrol('Parent',hChoicesPanel,'Unit','Normalized','Position',[0.0 0.4 0.5 0.2],'Style','text','String','Analysis Type','FontSize',fontSizeMedium);
 hAnalysisType = uicontrol('Parent',hChoicesPanel,'Unit','Normalized','Position',[0.5 0.4 0.5 0.2],'Style','popup','String',analysisTypeStringList,'FontSize',fontSizeMedium,'BackgroundColor', backgroundColor);
+
+% Save options
+saveTypeStringList = 'Nothing|Current combination|All combinations';
+saveTypeStringArray = [{'Nothing'} {'Current combination'} {'All combinations'}];
+uicontrol('Parent',hChoicesPanel,'Unit','Normalized','Position',[0.0 0.2 0.5 0.2],'Style','text','String','Data to save','FontSize',fontSizeMedium);
+hsaveType = uicontrol('Parent',hChoicesPanel,'Unit','Normalized','Position',[0.5 0.2 0.5 0.2],'Style','popup','String',saveTypeStringList,'FontSize',fontSizeMedium,'BackgroundColor', backgroundColor);
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 %%%%%%%%%%%%%%%%%%%%%%%%%%%% Timing panel %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
@@ -76,7 +82,7 @@ hYMin = uicontrol('Parent',hTimingPanel,'Unit','Normalized','Position',[0.50 0.2
 hYMax = uicontrol('Parent',hTimingPanel,'Unit','Normalized','Position',[0.75 0.2 0.25 0.2],'Style','edit','String','1','FontSize',fontSizeMedium, 'BackgroundColor', backgroundColor);
 
 % CLims
-zRange = [-1 2];
+zRange = [-10 10];
 uicontrol('Parent',hTimingPanel,'Unit','Normalized','Position',[0.00 0 0.50 0.2],'Style','text','String','Z Range','FontSize',fontSizeMedium);
 hZMin = uicontrol('Parent',hTimingPanel,'Unit','Normalized','Position',[0.50 0 0.25 0.2],'Style','edit','String',num2str(zRange(1)),'FontSize',fontSizeMedium, 'BackgroundColor', backgroundColor);
 hZMax = uicontrol('Parent',hTimingPanel,'Unit','Normalized','Position',[0.75 0 0.25 0.2],'Style','edit','String',num2str(zRange(2)),'FontSize',fontSizeMedium, 'BackgroundColor', backgroundColor);
@@ -99,6 +105,12 @@ hHoldOn = uicontrol('Parent',hPlotOptionsPanel,'Unit','Normalized','Position',[0
 uicontrol('Parent',hPlotOptionsPanel,'Unit','Normalized','Position',[0.5 0.2 0.5 0.2],'Style','pushbutton','String','cla','FontSize',fontSizeMedium,'Callback',{@cla_Callback});
 uicontrol('Parent',hPlotOptionsPanel,'Unit','Normalized','Position',[0.5 0.0 0.5 0.2],'Style','pushbutton','String','plot','FontSize',fontSizeMedium,'Callback',{@plotData_Callback});
 
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%% Saving Panel %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+hSaveOptionsPanel = uipanel('Title','Save Variables','fontSize', fontSizeMedium,'Unit','Normalized','Position',[0.817 0.723 0.18 0.053]);
+uicontrol('Parent',hSaveOptionsPanel,'Unit','Normalized','Position',[0.5 0.1 0.4 1],'Style','pushbutton','String','save ','FontSize',fontSizeMedium,'Callback',{@saveData_Callback});
+
 uicontrol('Unit','Normalized','Position',[0 0.95 1 0.05],'Style','text','String',[subjectName expDate protocolName],'FontSize',fontSizeLarge);
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
@@ -110,11 +122,11 @@ hElectrodes = showElectrodeLocations(electrodeGridPos,analogChannelsStored(get(h
 
 % Main plot handles
 mainGridPos = [0.05 0.05 0.75 0.675];
-sideGridPos = [0.85 0.05 0.125 0.675];
+sideGridPos = [0.85 0.05 0.125 0.65];
 
 if stimType==1 % AuditoryGamma
-
-    numRows = length(unique(stimData.RFVals))+1; 
+    
+    numRows = length(unique(stimData.RFVals))+1;
     numCols = length(unique(stimData.RVVals))+1;
     mainPlotHandles = getPlotHandles(numRows,numCols,mainGridPos,0.01);
     
@@ -136,15 +148,17 @@ end
         plotColor = colorNames(get(hChooseColor,'val'));
         holdOnState = get(hHoldOn,'val');
         
+        plotflag = 1;
+        
         % Plot Data
-        plotDataAllConditions(mainPlotHandles,stimType,'main',analogChannelString,referenceChannelString,folderName,analysisType,timeVals,stRange,plotColor);
-        plotDataAllConditions(sidePlotHandles,stimType,'side',analogChannelString,referenceChannelString,folderName,analysisType,timeVals,stRange,plotColor);
+        plotDataAllConditions(mainPlotHandles,stimType,'main',analogChannelString,referenceChannelString,folderName,analysisType,timeVals,stRange,plotColor,plotflag);
+        plotDataAllConditions(sidePlotHandles,stimType,'side',analogChannelString,referenceChannelString,folderName,analysisType,timeVals,stRange,plotColor,plotflag);
         
         % Rescale
         axisLims = getAxisLims;
         rescaleData(mainPlotHandles,axisLims);
         rescaleData(sidePlotHandles,axisLims);
-
+        
         % Show electrode location
         if analogChannelPos<=length(analogChannelsStored)
             channelNumber = analogChannelsStored(analogChannelPos);
@@ -166,13 +180,20 @@ end
         rescaleData(mainPlotHandles,axisLims);
         rescaleData(sidePlotHandles,axisLims);
     end
+    function rescaleZ_Callback(~,~)
+        axisLimsNew = getAxisLims;
+        zLims = [str2double(get(hZMin,'String')) str2double(get(hZMax,'String'))];
+        axisLims = [axisLimsNew(1:6) zLims];
+        rescaleData(mainPlotHandles,axisLims);
+        rescaleData(sidePlotHandles,axisLims);
+    end
     function axisLims = getAxisLims
         analysisType = analysisTypeStringArray{get(hAnalysisType,'val')};
         
         if strcmp(analysisType,'ERP') || strcmp(analysisType,'TF') || strcmp(analysisType,'deltaTF')
             xMin = str2double(get(hXMin,'String'));
             xMax = str2double(get(hXMax,'String'));
-
+            
         elseif strcmp(analysisType,'FFT') || strcmp(analysisType,'deltaFFT')
             xMin = str2double(get(hFFTMin,'String'));
             xMax = str2double(get(hFFTMax,'String'));
@@ -182,7 +203,14 @@ end
         yMin = min(yLimsMain(1),yLimsSide(1));
         yMax = max(yLimsMain(2),yLimsSide(2));
         
-        axisLims = [xMin xMax yMin yMax];
+        
+        if strcmp(analysisType,'TF') || strcmp(analysisType,'deltaTF')
+            zMin = str2double(get(hZMin,'String'));
+            zMax = str2double(get(hZMax,'String'));
+            axisLims = [xMin xMax yMin yMax -1 1 zMin zMax];
+        else
+            axisLims = [xMin xMax yMin yMax];
+        end
     end
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
     function holdOn_Callback(source,~)
@@ -226,11 +254,71 @@ end
             end
         end
     end
+    function saveData_Callback(~,~)
+        
+        savingType = saveTypeStringArray{get(hsaveType,'val')};
+        if strcmp (savingType,'All combinations')
+            disp ('Saving all');
+            stRange = [0.25 0.75];
+            plotColor = colorNames(get(hChooseColor,'val'));
+            plotflag = 0;
+            for itype = 1:length(analysisTypeStringArray)
+                for iref = 1:length(referenceChannelStringArray)
+                    for ielec = 1: length(analogChannelStringArray)
+                        analogChannelString = analogChannelStringArray{ielec};
+                        referenceChannelString = referenceChannelStringArray{iref};
+                        analysisType = analysisTypeStringArray{itype};
+                        % save Data
+                        main = plotDataAllConditions(mainPlotHandles,stimType,'main',analogChannelString,referenceChannelString,folderName,analysisType,timeVals,stRange,plotColor,plotflag);
+                        side = plotDataAllConditions(sidePlotHandles,stimType,'side',analogChannelString,referenceChannelString,folderName,analysisType,timeVals,stRange,plotColor,plotflag);
+                        data.elec.main(ielec,:,:)= main.dataVals;
+                        data.elec.side(ielec,:,:)= side.dataVals;
+                    end
+                    data.titleMatrix.main = main.titleMatrix;
+                    data.titleMatrix.side = side.titleMatrix;
+                    if ~strcmp(analysisType,'ERP')
+                        data.movingwin = main.movingwin;
+                        data.params = main.params;
+                        data.freqVals = main.freqVals;
+                    end
+                    if strcmp(analysisType,'TF') || strcmp(analysisType,'deltaTF')
+                        data.timeVals = main.timeVals;
+                        data.baselinepower = main.baselinepower;
+                    end
+                    Data.(referenceChannelString) = data;
+                end
+                DataAllComb.(analysisType) = Data;
+            end
+            save('data.mat','DataAllComb');
+            
+        elseif strcmp (savingType,'Current combination')
+            disp('Saving current combination');
+            
+            % Get Choices
+            analogChannelPos = get(hAnalogChannel,'val');
+            data.analogChannelString = analogChannelStringArray{analogChannelPos};
+            data.referenceChannelString = referenceChannelStringArray{get(hReferenceChannel,'val')};
+            data.analysisType = analysisTypeStringArray{get(hAnalysisType,'val')};
+            
+            data.stRange = [str2double(get(hStimPeriodMin,'String')) str2double(get(hStimPeriodMax,'String'))];
+            
+            plotColor = colorNames(get(hChooseColor,'val'));
+            plotflag = 0;
+            
+            % save Data
+            data.main = plotDataAllConditions(mainPlotHandles,stimType,'main',data.analogChannelString,data.referenceChannelString,folderName,data.analysisType,timeVals,data.stRange,plotColor,plotflag);
+            data.side = plotDataAllConditions(sidePlotHandles,stimType,'side',data.analogChannelString,data.referenceChannelString,folderName,data.analysisType,timeVals,data.stRange,plotColor,plotflag);
+            
+            save('data.mat','data');
+        else
+            disp('Not Saving')
+        end
+    end
 end
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 % Main function that plots the data
-function plotDataAllConditions(plotHandles,stimType,plotType,analogChannelString,referenceChannelString,folderName,analysisType,timeVals,stRange,plotColor)
+function data = plotDataAllConditions(plotHandles,stimType,plotType,analogChannelString,referenceChannelString,folderName,analysisType,timeVals,stRange,plotColor,plotflag)
 
 folderExtract = fullfile(folderName,'extractedData');
 folderSegment = fullfile(folderName,'segmentedData');
@@ -276,7 +364,7 @@ if strcmp(plotType,'main')
         if j>numDim2
             titleMatrix{numDim1+1,j} = [dim1Str 'All-' dim2Str 'All'];
         else
-            titleMatrix{numDim1+1,j} = [dim1Str num2str(uniqueDim1Vals(i)) '-' dim2Str 'All'];
+            titleMatrix{numDim1+1,j} = [dim1Str 'All-' dim2Str num2str(uniqueDim2Vals(j))];
         end
     end
 elseif strcmp(plotType,'side')
@@ -284,6 +372,7 @@ elseif strcmp(plotType,'side')
     parameterCombinationMatrix = parameterCombinations(goodIndices)';
     titleMatrix = uniqueAudFileNames(goodIndices)';
 end
+data.titleMatrix = titleMatrix;
 
 % Get the index of the blank stimulus
 blankStimIndex=[];
@@ -337,13 +426,20 @@ for i=1:numRows
         if isempty(goodPos)
             disp('No entries for this combination..');
         else
-            disp(['pos=(' num2str(i) ',' num2str(j) ') ,n=' num2str(length(goodPos))]);
-
+            if plotflag == 1
+                disp(['pos=(' num2str(i) ',' num2str(j) ') ,n=' num2str(length(goodPos))]);
+            end
+            
             if strcmp(analysisType,'ERP')        % compute ERP
-                clear erp
+                clear erp                
                 erp = mean(analogData(goodPos,:),1);
                 erp=erp-mean(erp);
-                plot(plotHandles(i,j),timeVals,erp,'color',plotColor);
+                
+                if plotflag == 1
+                    plot(plotHandles(i,j),timeVals,erp,'color',plotColor);
+                else
+                    data.dataVals{i,j} = erp;
+                end
                 
             else
                 
@@ -351,24 +447,91 @@ for i=1:numRows
                 rangePos = round(diff(stRange)*Fs);
                 stPos = find(timeVals>=stRange(1),1)+ (1:rangePos);
                 xs = 0:1/diff(stRange):Fs-1/diff(stRange);
-            
-                fftST = abs(fft(analogData(goodPos,stPos),[],2));
-                fftBL = abs(fft(analogData(goodPosBL,stPos),[],2));
                 
-                if strcmp(analysisType,'FFT')
-                    plot(plotHandles(i,j),xs,log10(mean(fftST)),'color',plotColor);
-                    hold(plotHandles(i,j),'on');
-                    plot(plotHandles(i,j),xs,log10(mean(fftBL)),'color','k');
+                
+                %%% params %%%
+                movingwin = [0.25 0.025];
+                params.tapers   = [1 1];
+                params.pad      = -1;
+                params.Fs       = Fs;
+                params.trialave = 1; %averaging across trials
+                data.movingwin = movingwin;
+                
+                if strcmp(analysisType,'FFT')||strcmp(analysisType,'deltaFFT')
+                    params.fpass    = [0 length(xs)];
+                    data.params = params;
+                    [fftST,fST]= mtspectrumc(analogData(goodPos,stPos)',params);
+                    [fftBL,fBL]= mtspectrumc(analogData(goodPosBL,stPos)',params);
+                    data.freqVals = fST;
+                    
+                    if strcmp(analysisType,'FFT')
+                        plot(plotHandles(i,j),fST,log10(fftST),'color',plotColor);
+                        hold(plotHandles(i,j),'on');
+                        plot(plotHandles(i,j),fST,log10(fftBL),'color','k');
+                    else
+                        plot(plotHandles(i,j),fST,log10(fftST)-log10(fftBL),'color',plotColor);
+                        hold(plotHandles(i,j),'on');
+                        plot(plotHandles(i,j),fST,zeros(1,length(fBL)),'color','k');
+                    end
+                    if plotflag == 1
+                        if strcmp(analysisType,'FFT')
+                            plot(plotHandles(i,j),fST,log10(fftST),'color',plotColor);
+                            hold(plotHandles(i,j),'on');
+                            plot(plotHandles(i,j),fST,log10(fftBL),'color','k');
+                        else
+                            plot(plotHandles(i,j),fST,log10(fftST)-log10(fftBL),'color',plotColor);
+                            hold(plotHandles(i,j),'on');
+                            plot(plotHandles(i,j),fST,zeros(1,length(fBL)),'color','k');
+                        end
+                    else
+                        if strcmp(analysisType,'FFT')
+                            data.dataVals{i,j} = fftST;
+                        else
+                            data.dataVals{i,j}= log10(fftST)-log10(fftBL);
+                        end
+                    end
+                    
                 end
                 
-                if strcmp(analysisType,'deltaFFT')
-                    plot(plotHandles(i,j),xs,log10(mean(fftST))-log10(mean(fftBL)),'color',plotColor);
-                    hold(plotHandles(i,j),'on');
-                    plot(plotHandles(i,j),xs,zeros(1,length(xs)),'color','k');
+                if strcmp(analysisType,'TF') || strcmp(analysisType,'deltaTF')
+                    params.fpass    = [0 100];
+                    data.params = params;
+                    [TfSt,TimeSt,FreqSt] = mtspecgramc(analogData(goodPos,:)',movingwin,params);
+                    [TfBl,TimeBl,~] = mtspecgramc(analogData(goodPosBL,:)',movingwin,params);
+                    TimeVals = TimeSt+timeVals(1)-1/Fs;
+                    powerSt = log10(TfSt);
+                    powerBl = log10(repmat(mean(TfBl,1),length(TimeBl),1));
+                    PowerChange = powerSt-powerBl;
+                    
+                    data.timeVals = TimeVals;
+                    data.freqVals = FreqSt;
+                    data.baselinepower = 10*powerBl;
+                    
+                    if plotflag == 1
+                        if strcmp(analysisType,'TF')
+                            subplot(plotHandles(i,j))
+                            pcolor(TimeVals, FreqSt,10*(powerSt)');
+                            colormap('jet');
+                            shading interp;
+                        else
+                            subplot(plotHandles(i,j))
+                            pcolor(TimeVals, FreqSt,10*(PowerChange)');
+                            colormap('jet');
+                            shading interp;
+                        end
+                    else
+                        if strcmp(analysisType,'TF')
+                            data.dataVals{i,j} = 10*(powerSt);
+                        else
+                            data.dataVals{i,j}= 10*(PowerChange);
+                        end
+                    end
                 end
+                
             end
-            
-            text(0.05,0.9,titleMatrix{i,j},'Unit','Normalized','Parent',plotHandles(i,j));
+            if plotflag == 1
+                text(0.05,0.9,titleMatrix{i,j},'Unit','Normalized','Parent',plotHandles(i,j));
+            end
         end
     end
 end
