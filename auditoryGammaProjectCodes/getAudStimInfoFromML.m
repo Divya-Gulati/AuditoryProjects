@@ -10,7 +10,7 @@ conditionNumbers = zeros(1,numTrials);
 audFileNames = cell(1,numTrials);
 for i=1:numTrials
     x = MLData.data(i);
-    conditionNumbers(i) = x.BehavioralCodes.CodeNumbers(2);
+    conditionNumbers(i) = x.Condition;%x.BehavioralCodes.CodeNumbers(2);
     a = x.TaskObject.Attribute{1};
     audFileNames{i} = a{2};
 end
