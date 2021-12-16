@@ -1,4 +1,3 @@
-x = TrialRecord.CurrentCondition+20;
-toggleobject(1,'eventmarker',x);
-idle(800);
+toggleobject(1,'eventmarker',7);
+idle(900);
 trialerror(0);
