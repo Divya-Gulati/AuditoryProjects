@@ -34,8 +34,8 @@ Azi_List=0; Elev_List=0;
 % Om_List = -2:0.4:2; % Ripple frequency
 % Ph_List = [0 0.25 0.5 0.75]*pi; % Ripple phase; should be in radians (eg. pi/2, pi/4, etc.)
 %changed by DG for ecog protocol
-w_List = [0,2.5,5,10,20,40]; % Ripple velocity
-Om_List = [0,0.4,0.8,1.6,2.4]; % Ripple frequency
+w_List = [0,5,10,20]; % Ripple velocity
+Om_List = [0,0.8,1.6]; % Ripple frequency
 Ph_List = pi*0; % Ripple phase; should be in radians (eg. pi/2, pi/4, etc.)
 
 T0 = 0.8; % Stimulus duration
