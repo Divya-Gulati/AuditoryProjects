@@ -1,0 +1,13 @@
+Condition	Frequency	Block	Timing File	TaskObject#1	
+1	1	1	timingfile_auditory	snd(Azi_0.0_Elev_0.0_Type_1_RF_0.0_RP_0_MD_0.9_RV_0.0_Dur_800.wav)
+2	1	1	timingfile_auditory	snd(Azi_0.0_Elev_0.0_Type_1_RF_0.0_RP_0_MD_0.9_RV_5.0_Dur_800.wav)
+3	1	1	timingfile_auditory	snd(Azi_0.0_Elev_0.0_Type_1_RF_0.0_RP_0_MD_0.9_RV_10.0_Dur_800.wav)
+4	1	1	timingfile_auditory	snd(Azi_0.0_Elev_0.0_Type_1_RF_0.0_RP_0_MD_0.9_RV_20.0_Dur_800.wav)
+5	1	1	timingfile_auditory	snd(Azi_0.0_Elev_0.0_Type_1_RF_0.8_RP_0_MD_0.9_RV_0.0_Dur_800.wav)
+6	1	1	timingfile_auditory	snd(Azi_0.0_Elev_0.0_Type_1_RF_0.8_RP_0_MD_0.9_RV_5.0_Dur_800.wav)
+7	1	1	timingfile_auditory	snd(Azi_0.0_Elev_0.0_Type_1_RF_0.8_RP_0_MD_0.9_RV_10.0_Dur_800.wav)
+8	1	1	timingfile_auditory	snd(Azi_0.0_Elev_0.0_Type_1_RF_0.8_RP_0_MD_0.9_RV_20.0_Dur_800.wav)
+9	1	1	timingfile_auditory	snd(Azi_0.0_Elev_0.0_Type_1_RF_1.6_RP_0_MD_0.9_RV_0.0_Dur_800.wav)
+10	1	1	timingfile_auditory	snd(Azi_0.0_Elev_0.0_Type_1_RF_1.6_RP_0_MD_0.9_RV_5.0_Dur_800.wav)
+11	1	1	timingfile_auditory	snd(Azi_0.0_Elev_0.0_Type_1_RF_1.6_RP_0_MD_0.9_RV_10.0_Dur_800.wav)
+12	1	1	timingfile_auditory	snd(Azi_0.0_Elev_0.0_Type_1_RF_1.6_RP_0_MD_0.9_RV_20.0_Dur_800.wav)
