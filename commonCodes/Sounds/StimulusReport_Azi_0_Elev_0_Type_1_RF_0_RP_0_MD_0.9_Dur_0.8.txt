@@ -7,15 +7,7 @@ Am      w       Om      Ph
 rms of original sound: 13.435
 rms of normalised sound: 0.2308
 Applying hanning ramp of 0.01 sec
-Saved sound file: Azi_0.0_Elev_0.0_Type_1_RF_0.0_RP_0_MD_0.9_RV_0.0_Dur_800.wav to folder: D:\OneDrive - Indian Institute of Science\divya\NimhansRippleProject\AuditoryGammaECoGProject\Sounds
-
-New Sound
-Am      w       Om      Ph
-1         2.5           0           0
-rms of original sound: 8.3815
-rms of normalised sound: 0.16524
-Applying hanning ramp of 0.01 sec
-Saved sound file: Azi_0.0_Elev_0.0_Type_1_RF_0.0_RP_0_MD_0.9_RV_2.5_Dur_800.wav to folder: D:\OneDrive - Indian Institute of Science\divya\NimhansRippleProject\AuditoryGammaECoGProject\Sounds
+Saved sound file: Azi_0.0_Elev_0.0_Type_1_RF_0.0_RP_0_MD_0.9_RV_0.0_Dur_800.wav to folder: D:\OneDrive - Indian Institute of Science\divya\NimhansRippleProject\Divya_AuditoryProjects\programs\AuditoryProjects\commonCodes\Sounds
 
 New Sound
 Am      w       Om      Ph
@@ -23,7 +15,7 @@ Am      w       Om      Ph
 rms of original sound: 8.3651
 rms of normalised sound: 0.1834
 Applying hanning ramp of 0.01 sec
-Saved sound file: Azi_0.0_Elev_0.0_Type_1_RF_0.0_RP_0_MD_0.9_RV_5.0_Dur_800.wav to folder: D:\OneDrive - Indian Institute of Science\divya\NimhansRippleProject\AuditoryGammaECoGProject\Sounds
+Saved sound file: Azi_0.0_Elev_0.0_Type_1_RF_0.0_RP_0_MD_0.9_RV_5.0_Dur_800.wav to folder: D:\OneDrive - Indian Institute of Science\divya\NimhansRippleProject\Divya_AuditoryProjects\programs\AuditoryProjects\commonCodes\Sounds
 
 New Sound
 Am      w       Om      Ph
@@ -31,7 +23,7 @@ Am      w       Om      Ph
 rms of original sound: 8.3012
 rms of normalised sound: 0.16868
 Applying hanning ramp of 0.01 sec
-Saved sound file: Azi_0.0_Elev_0.0_Type_1_RF_0.0_RP_0_MD_0.9_RV_10.0_Dur_800.wav to folder: D:\OneDrive - Indian Institute of Science\divya\NimhansRippleProject\AuditoryGammaECoGProject\Sounds
+Saved sound file: Azi_0.0_Elev_0.0_Type_1_RF_0.0_RP_0_MD_0.9_RV_10.0_Dur_800.wav to folder: D:\OneDrive - Indian Institute of Science\divya\NimhansRippleProject\Divya_AuditoryProjects\programs\AuditoryProjects\commonCodes\Sounds
 
 New Sound
 Am      w       Om      Ph
@@ -39,12 +31,4 @@ Am      w       Om      Ph
 rms of original sound: 8.3875
 rms of normalised sound: 0.14616
 Applying hanning ramp of 0.01 sec
-Saved sound file: Azi_0.0_Elev_0.0_Type_1_RF_0.0_RP_0_MD_0.9_RV_20.0_Dur_800.wav to folder: D:\OneDrive - Indian Institute of Science\divya\NimhansRippleProject\AuditoryGammaECoGProject\Sounds
-
-New Sound
-Am      w       Om      Ph
-1  40   0   0
-rms of original sound: 8.5774
-rms of normalised sound: 0.15605
-Applying hanning ramp of 0.01 sec
-Saved sound file: Azi_0.0_Elev_0.0_Type_1_RF_0.0_RP_0_MD_0.9_RV_40.0_Dur_800.wav to folder: D:\OneDrive - Indian Institute of Science\divya\NimhansRippleProject\AuditoryGammaECoGProject\Sounds
+Saved sound file: Azi_0.0_Elev_0.0_Type_1_RF_0.0_RP_0_MD_0.9_RV_20.0_Dur_800.wav to folder: D:\OneDrive - Indian Institute of Science\divya\NimhansRippleProject\Divya_AuditoryProjects\programs\AuditoryProjects\commonCodes\Sounds
